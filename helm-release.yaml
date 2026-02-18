@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicaƟon
+metadata:
+ name: monitoring
+ namespace: argocd
+ annotaƟons:
+ argocd.argoproj.io/sync-wave: "0"
+spec:
+ project: default
+ source:
+ repoURL: hƩps://prometheus-community.github.io/helm-charts
+ chart: kube-prometheus-stack
+ targetRevision: 56.6.2
+ helm:
+ valueFiles:
+ - values.yaml
+ desƟnaƟon:
+ server: hƩps://kubernetes.default.svc
+ namespace: monitoring
+ syncPolicy:
+ automated:
+ prune: true
+ selfHeal: true
