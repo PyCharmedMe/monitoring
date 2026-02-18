@@ -1,23 +1,26 @@
 apiVersion: argoproj.io/v1alpha1
-kind: ApplicaƟon
+kind: Application
 metadata:
- name: monitoring
- namespace: argocd
- annotaƟons:
- argocd.argoproj.io/sync-wave: "0"
+  name: monitoring
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
 spec:
- project: default
- source:
- repoURL: hƩps://prometheus-community.github.io/helm-charts
- chart: kube-prometheus-stack
- targetRevision: 56.6.2
- helm:
- valueFiles:
- - values.yaml
- desƟnaƟon:
- server: hƩps://kubernetes.default.svc
- namespace: monitoring
- syncPolicy:
- automated:
- prune: true
- selfHeal: true
+  project: default
+  source:
+    repoURL: https://prometheus-community.github.io/helm-charts
+    chart: kube-prometheus-stack
+    targetRevision: 82.1.0
+    helm:
+      valueFiles:
+        - values.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: monitoring
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
